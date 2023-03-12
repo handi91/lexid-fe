@@ -22,7 +22,7 @@ function Header() {
           <Link href={'/about'}>
             <p className='menu'>Tentang</p>
           </Link>
-          <Link href={'/ask'}>
+          <Link href={'/'}>
             <p className="menu">Tanya</p>
           </Link>
         </div>
