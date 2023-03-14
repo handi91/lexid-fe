@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import Header from '@/components/Header'
@@ -16,7 +17,7 @@ const BACK_END = {
 export default function Home() {
   const inputRef = useRef(null);
   const [suggestions, setSuggestions] = useState([]);
-  const [result, setResult] = useState({ question: '', answer: '' });
+  const [results, setResults] = useState([]);
   const [alternativeResult, setAlternativeResult] = useState({ question: '', answer: ''})
   const [searchValue, setSearchValue] = useState('');
   const [autocompleteInput, setAutocompleteInput] = useState('');
@@ -85,26 +86,25 @@ export default function Home() {
     try {
       const response = await axios.post(`${BACK_END.ask}?question=${searchValue}`);
       if (response.data.invalid) {
-        setResult({
+        let result = {
           question: searchValue,
-          answer: "Pertanyaan tidak dikenali"
-        })
+          answer: "Pertanyaan tidak dikenali",
+          alternativeQuestion : "",
+          alternativeAnswer: ""
+        }
         const alternativeResponse = await axios.post(`${BACK_END.correction}?question=${searchValue}`)
         if (alternativeResponse.data.result) {
-          setAlternativeResult({
-            question: alternativeResponse.data.question,
-            answer: alternativeResponse.data.result
-          })
+          result.alternativeQuestion = alternativeResponse.data.question
+          result.alternativeAnswer = alternativeResponse.data.result
         }
+        setResults([...results, result])
       } else {
-        setResult({
+        setResults([...results, {
           question: searchValue,
-          answer: response.data['result']
-        })
-        setAlternativeResult({
-          question: '',
-          answer: ''
-        })
+          answer: response.data['result'],
+          alternativeQuestion: '',
+          alternativeAnswer: ''
+        }])
       }
     } catch (error) {
     }
@@ -115,77 +115,78 @@ export default function Home() {
   }
 
   return (
-    <div className='flex flex-col items-center justify-center w-screen'>
+    <div className='flex flex-col items-center justify-center w-screen min-h-screen'>
       <Head>
         <title>Lexid - Tanya</title>
       </Head>
       <Header />
-      <div className='flex flex-col items-center justify-center flex-grow w-4/5 z-0'>
-        <div className="w-full lg:pt-24 md:pt-16 pt-10">
-          <form onSubmit={handleSubmit}>
-            <div className="flex space-x-1 items-start">
-              <div className="w-full">
-                <input
-                  required
-                  ref={inputRef}
-                  className={`w-full bg-white px-4 py-2 text-gray-700 ${
-                    suggestions.length > 0
-                      ? "rounded-tl-lg rounded-tr-lg"
-                      : "rounded-lg"
-                  } z-10 border focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 text-black`}
-                  placeholder="Ketik Pertanyaan"
-                  onChange={ e => handleOnchangeInput(e.target.value)}
-                  onClick={ e => handleOnchangeInput(e.target.value)}
-                />
-                <ul className="w-auto rounded-bl-lg rounded-br-lg border-r border-l border-b bg-white focus:border-slate-300 focus:outline-none focus:ring focus:ring-slate-200 focus:ring-opacity-40 max-h-[45vh] overflow-y-auto">
-                  {suggestions.map((suggestion) => {
-                    return (
-                      // eslint-disable-next-line react/jsx-key
-                      <li
-                        className="flex space-x-1 cursor-pointer border-slate-200 p-2 px-4 text-black hover:bg-slate-300">
-                        <p>{autocompleteCollection.length > 0? '...' : '' } </p>
-                        <p className="w-full h-full"onClick={e => handleAutocomplete(e)}>{suggestion}</p>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-              <button type="submit" className="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-amber-700 rounded-lg border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
-                <svg aria-hidden="true" className="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor"
-                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round"
-                stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Search
-              </button>
-            </div>
-          </form>
-        </div>
-        {result.answer && 
-          <div className="w-full p-5">
-            <div className="p-3 border-b border-slate-300">
+      <div className='flex flex-col items-center justify-start flex-grow w-4/5 z-0 pb-16'>
+        <div className="w-full p-5">
+        {results.map((result) => {
+          return (    
+            <><div className="p-3 border-b border-slate-300">
               <p className="font-medium">Pertanyaan:</p>
               <p>{result.question}</p>
-            </div>
-            <div className="p-3 border-b border-slate-300">
-              <p className="font-medium">Jawaban:</p>
-              <p className="whitespace-pre-line">{result.answer}</p>
-            </div>
-          </div>
-        }
-        {alternativeResult.answer &&
-          <div className="w-full p-5">
-            <div className="p-3 border border-slate-300">
-              <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
-              <p className="mt-2.5">{alternativeResult.question}</p>
-              <div className="flex mt-0.5 w-full space-x-3">
+            </div><div className="p-3 border-b border-slate-300">
                 <p className="font-medium">Jawaban:</p>
-                <div>
-                  <p className="whitespace-pre-line">
-                    {alternativeResult.answer}
-                  </p>
-                </div>
-              </div>
+                <p className="whitespace-pre-line">{result.answer}</p>
+                {result.alternativeQuestion &&
+                  <div className="w-full py-3">
+                    <div className="p-3 border border-slate-300">
+                      <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
+                      <p className="mt-2.5">{result.alternativeQuestion}</p>
+                      <div className="flex mt-0.5 w-full space-x-3">
+                        <p className="font-medium">Jawaban:</p>
+                        <div>
+                          <p className="whitespace-pre-line">
+                            {result.alternativeAnswer}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>}
+              </div></>
+          )
+        })
+        } 
+        </div>     
+      </div>
+      <div className="w-4/5 fixed bottom-0 bg-white z-10 pb-5">
+        <form onSubmit={handleSubmit}>
+          <div className="flex space-x-1 items-start">
+            <div className="w-full">
+              <input
+                required
+                ref={inputRef}
+                className={`w-full bg-white px-4 py-2 text-gray-700 ${
+                  suggestions.length > 0
+                    ? "rounded-tl-lg rounded-tr-lg"
+                    : "rounded-lg"
+                } z-10 border focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 text-black`}
+                placeholder="Ketik Pertanyaan"
+                onChange={ e => handleOnchangeInput(e.target.value)}
+                onClick={ e => handleOnchangeInput(e.target.value)}
+              />
+              <ul className="w-auto rounded-bl-lg rounded-br-lg border-r border-l border-b bg-white focus:border-slate-300 focus:outline-none focus:ring focus:ring-slate-200 focus:ring-opacity-40 max-h-[45vh] overflow-y-auto">
+                {suggestions.map((suggestion) => {
+                  return (
+                    // eslint-disable-next-line react/jsx-key
+                    <li
+                      className="flex space-x-1 cursor-pointer border-slate-200 p-2 px-4 text-black hover:bg-slate-300">
+                      <p>{autocompleteCollection.length > 0? '...' : '' } </p>
+                      <p className="w-full h-full" onClick={e => handleAutocomplete(e)}>{suggestion}</p>
+                    </li>
+                  );
+                })}
+              </ul>
             </div>
+            <button type="submit" className="inline-flex items-center py-2.5 px-3 ml-2 text-sm font-medium text-white bg-amber-700 rounded-lg border border-amber-700 hover:bg-amber-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+              <svg aria-hidden="true" className="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round"
+              stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>Search
+            </button>
           </div>
-        }
+        </form>
       </div>
     </div>
   );
