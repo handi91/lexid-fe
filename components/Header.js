@@ -4,8 +4,8 @@ import Image from "next/image"
 
 function Header() {
   return (
-    <header className='flex w-full p-5 items-center text-lg text-black justify-center sticky top-0 border-b shadow-md bg-white z-10'>
-      <div className='flex space-x-7 items-center justify-evently lg:w-4/5'>
+    <header className='flex w-full p-5 items-center text-lg text-black justify-center fixed top-0 border-b shadow-md bg-white z-10'>
+      <div className='flex space-x-7 items-center justify-evently lg:w-2/3'>
         <div className="flex items-center">
           <Link href={'/'}>
             <div className="flex space-x-2">
