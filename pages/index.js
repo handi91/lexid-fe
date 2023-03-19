@@ -30,7 +30,6 @@ export default function Home() {
   useEffect(() => {
     async function fetchSuggestions() {
       try {
-        console.log(process.env)
         const index = autocompleteCollection.length
         const head = (index === 0 ? '': autocompleteCollection[0])
         const prev = (index === 0 ? '': autocompleteCollection[index-1])
@@ -39,11 +38,7 @@ export default function Home() {
       } catch (error) {
       }
     }
-    if (autocompleteInput) {
-      fetchSuggestions();
-    } else {
-      setSuggestions([]);
-    }
+    fetchSuggestions();
   }, [autocompleteInput, autocompleteCollection]);
 
   const handleOnchangeInput = (input) => {
@@ -214,7 +209,7 @@ export default function Home() {
                       // eslint-disable-next-line react/jsx-key
                       <li
                         className="flex space-x-1 cursor-pointer border-slate-200 p-2 px-4 text-black hover:bg-slate-300">
-                        <p>{autocompleteCollection.length > 0? '...' : '' } </p>
+                        <p>{autocompleteCollection.length > 0 ? '...' : '' } </p>
                         <p className="w-full h-full" onClick={e => handleAutocomplete(e)}>{suggestion}</p>
                       </li>
                     );
