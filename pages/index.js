@@ -120,14 +120,17 @@ export default function Home() {
     try {
       const response = await axios.post(`${BACKEND_ASK}?question=${searchText}`);
       setResults([...results, {
-        question: searchText,
-        answer: response.data['result'],
-        alternativeQuestion: '',
-        alternativeAnswer: ''
-      }])
+          question: searchText,
+          answer: response.data['result'],
+          alternativeQuestion: '',
+          alternativeAnswer: ''
+        }])
     } catch (error) {
     }
   }
+  useEffect(() => {
+    document.getElementById('bottom').scrollIntoView({behavior:'smooth'})
+  }, [results]);
 
   return (
     <div className="flex">
@@ -156,36 +159,45 @@ export default function Home() {
       </aside>
       <div className='flex flex-col items-center justify-center md:ml-96 w-screen min-h-screen'>       
         <Header />
-        <div className='flex flex-col items-center justify-start flex-grow w-5/6 z-0 py-20'>
-          <div className="w-full p-5">
+        <div className='flex flex-col items-center justify-start h-full flex-grow w-full z-0 py-20'>
+          <div className="w-full py-3">
           {results.map((result) => {
             return (    
-              <><div className="p-3 border-b border-slate-300">
-                <p className="font-medium">Pertanyaan:</p>
-                <p>{result.question}</p>
-              </div><div className="p-3 border-b border-slate-300">
-                  <p className="font-medium">Jawaban:</p>
-                  <p className="whitespace-pre-line">{result.answer}</p>
-                  {result.alternativeQuestion &&
-                    <div className="w-full py-3">
-                      <div className="p-3 border border-slate-300">
-                        <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
-                        <p className="mt-2.5">{result.alternativeQuestion}</p>
-                        <div className="flex mt-0.5 w-full space-x-3">
-                          <p className="font-medium">Jawaban:</p>
-                          <div>
-                            <p className="whitespace-pre-line">
-                              {result.alternativeAnswer}
-                            </p>
-                          </div>
+              <>
+              <div className="flex space-x-8 items-start py-5 px-10 border-b border-slate-300">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z" />
+                </svg>
+                <p className='w-5/6'>{result.question}</p>
+              </div>
+              <div className="flex space-x-8 items-start py-5 px-10 border-b border-slate-300 bg-gray-200">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                  <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clip-rule="evenodd" />
+                </svg>
+                <div>
+                <p className="whitespace-pre-line">{result.answer}</p>
+                {result.alternativeQuestion &&
+                  <div className="w-full py-3">
+                    <div className="p-3 px-5 border border-slate-300">
+                      <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
+                      <p className="mt-2.5">{result.alternativeQuestion}</p>
+                      <div className="flex mt-0.5 w-full space-x-3">
+                        <p className="font-medium">Jawaban:</p>
+                        <div>
+                          <p className="whitespace-pre-line">
+                            {result.alternativeAnswer}
+                          </p>
                         </div>
                       </div>
-                    </div>}
-                </div></>
+                    </div>
+                  </div>}
+                </div>
+              </div></>
             )
           })
-          } 
-          </div>     
+          }
+          <div id='bottom'></div>
+          </div>
         </div>
         <div className="w-2/3 fixed bottom-0 bg-white z-10 pb-5">
           <form onSubmit={handleSubmit}>
@@ -208,7 +220,7 @@ export default function Home() {
                     return (
                       // eslint-disable-next-line react/jsx-key
                       <li
-                        className="flex space-x-1 cursor-pointer border-slate-200 p-2 px-4 text-black hover:bg-slate-300">
+                        className="flex space-x-1 cursor-pointer border-slate-200 p-1.5 px-4 text-black hover:bg-slate-300">
                         <p>{autocompleteCollection.length > 0 ? '...' : '' } </p>
                         <p className="w-full h-full" onClick={e => handleAutocomplete(e)}>{suggestion}</p>
                       </li>
