@@ -30,6 +30,8 @@ export default function Home() {
         const response = await axios.post(`${BACKEND_SUGGESTION}?input=${autocompleteInput}&index=${index}&head=${head}&prev=${prev}`);
         setSuggestions(response.data.suggestions);
       } catch (error) {
+        console.log(error)
+        alert(error)
       }
     }
     fetchSuggestions();
@@ -205,7 +207,7 @@ export default function Home() {
                       ? "rounded-tl-lg rounded-tr-lg"
                       : "rounded-lg"
                   } z-10 border focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 text-black`}
-                  placeholder={`${BACKEND_CORRECTION} ${BACKEND_ASK} ${BACKEND_SUGGESTION}`}
+                  placeholder='Ketik pertanyaan dimulai dengan "Apa", "Bagaimana", "Berapa", "Kapan", "Peraturan", "Siapa"'
                   onChange={ e => handleOnchangeInput(e.target.value)}
                   onClick={ e => handleOnchangeInput(e.target.value)}
                 />
