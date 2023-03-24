@@ -152,6 +152,7 @@ export default function Home() {
     <div className="flex">
       <Head>
         <title>Lexid</title>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       </Head>
       <aside className="fixed top-0 left-0 z-40 w-96 h-screen transition-transform -translate-x-full md:translate-x-0 shadow-sm" aria-label="Sidebar">
         <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
