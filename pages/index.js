@@ -28,12 +28,7 @@ export default function Home() {
         const head = (index === 0 ? '': autocompleteCollection[0])
         const prev = (index === 0 ? '': autocompleteCollection[index-1])
         const response = await axios.post(
-          `${BACKEND_SUGGESTION}?input=${autocompleteInput}&index=${index}&head=${head}&prev=${prev}`,
-          {
-            headers: {
-              "Referer-Policy":"unsafe-url"
-            }
-          });
+          `${BACKEND_SUGGESTION}?input=${autocompleteInput}&index=${index}&head=${head}&prev=${prev}`);
         setSuggestions(response.data.suggestions);
       } catch (error) {
         console.log(error)
@@ -85,12 +80,7 @@ export default function Home() {
     e.preventDefault();
     inputRef.current.value = '';
     try {
-      const response = await axios.post(`${BACKEND_ASK}?question=${searchValue}`,
-      {
-        headers: {
-          "Referer-Policy":"unsafe-url"
-        }
-      });
+      const response = await axios.post(`${BACKEND_ASK}?question=${searchValue}`);
       if (response.data.invalid) {
         let result = {
           question: searchValue,
@@ -98,12 +88,7 @@ export default function Home() {
           alternativeQuestion : "",
           alternativeAnswer: ""
         }
-        const alternativeResponse = await axios.post(`${BACKEND_CORRECTION}?question=${searchValue}`,
-        {
-          headers: {
-            "Referer-Policy":"unsafe-url"
-          }
-        })
+        const alternativeResponse = await axios.post(`${BACKEND_CORRECTION}?question=${searchValue}`)
         if (alternativeResponse.data.result) {
           result.alternativeQuestion = alternativeResponse.data.question
           result.alternativeAnswer = alternativeResponse.data.result
@@ -129,12 +114,7 @@ export default function Home() {
     e.preventDefault()
     const searchText = e.target.outerText
     try {
-      const response = await axios.post(`${BACKEND_ASK}?question=${searchText}`,
-      {
-        headers: {
-          "Referer-Policy":"unsafe-url"
-        }
-      });
+      const response = await axios.post(`${BACKEND_ASK}?question=${searchText}`);
       setResults([...results, {
           question: searchText,
           answer: response.data['result'],
