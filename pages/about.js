@@ -7,9 +7,6 @@ function About() {
     <div className='flex flex-col items-center justify-center w-screen h-screen'>
       <Head>
         <title>Lexid</title>
-        <meta
-          http-equiv="Content-Security-Policy"
-          content="upgrade-insecure-requests" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/Iconleak-Or-Auction-hammer.ico" />
       </Head>

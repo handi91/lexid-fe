@@ -31,7 +31,6 @@ export default function Home() {
         setSuggestions(response.data.suggestions);
       } catch (error) {
         console.log(error)
-        alert(error)
       }
     }
     fetchSuggestions();
@@ -131,9 +130,6 @@ export default function Home() {
   return (
     <div className="flex">
       <Head>
-        <meta
-          http-equiv="Content-Security-Policy"
-          content="upgrade-insecure-requests" />
         <title>Lexid</title>
       </Head>
       <aside className="fixed top-0 left-0 z-40 w-96 h-screen transition-transform -translate-x-full md:translate-x-0 shadow-sm" aria-label="Sidebar">
