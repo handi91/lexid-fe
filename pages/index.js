@@ -205,7 +205,7 @@ export default function Home() {
                       ? "rounded-tl-lg rounded-tr-lg"
                       : "rounded-lg"
                   } z-10 border focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 text-black`}
-                  placeholder={BACKEND_CORRECTION}
+                  placeholder={`${BACKEND_CORRECTION} ${BACKEND_ASK} ${BACKEND_SUGGESTION}`}
                   onChange={ e => handleOnchangeInput(e.target.value)}
                   onClick={ e => handleOnchangeInput(e.target.value)}
                 />
