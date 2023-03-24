@@ -27,7 +27,13 @@ export default function Home() {
         const index = autocompleteCollection.length
         const head = (index === 0 ? '': autocompleteCollection[0])
         const prev = (index === 0 ? '': autocompleteCollection[index-1])
-        const response = await axios.post(`${BACKEND_SUGGESTION}?input=${autocompleteInput}&index=${index}&head=${head}&prev=${prev}`);
+        const response = await axios.post(
+          `${BACKEND_SUGGESTION}?input=${autocompleteInput}&index=${index}&head=${head}&prev=${prev}`,
+          {
+            headers: {
+              "Referer-Policy":"unsafe-url"
+            }
+          });
         setSuggestions(response.data.suggestions);
       } catch (error) {
         console.log(error)
@@ -79,7 +85,12 @@ export default function Home() {
     e.preventDefault();
     inputRef.current.value = '';
     try {
-      const response = await axios.post(`${BACKEND_ASK}?question=${searchValue}`);
+      const response = await axios.post(`${BACKEND_ASK}?question=${searchValue}`,
+      {
+        headers: {
+          "Referer-Policy":"unsafe-url"
+        }
+      });
       if (response.data.invalid) {
         let result = {
           question: searchValue,
@@ -87,7 +98,12 @@ export default function Home() {
           alternativeQuestion : "",
           alternativeAnswer: ""
         }
-        const alternativeResponse = await axios.post(`${BACKEND_CORRECTION}?question=${searchValue}`)
+        const alternativeResponse = await axios.post(`${BACKEND_CORRECTION}?question=${searchValue}`,
+        {
+          headers: {
+            "Referer-Policy":"unsafe-url"
+          }
+        })
         if (alternativeResponse.data.result) {
           result.alternativeQuestion = alternativeResponse.data.question
           result.alternativeAnswer = alternativeResponse.data.result
@@ -113,7 +129,12 @@ export default function Home() {
     e.preventDefault()
     const searchText = e.target.outerText
     try {
-      const response = await axios.post(`${BACKEND_ASK}?question=${searchText}`);
+      const response = await axios.post(`${BACKEND_ASK}?question=${searchText}`,
+      {
+        headers: {
+          "Referer-Policy":"unsafe-url"
+        }
+      });
       setResults([...results, {
           question: searchText,
           answer: response.data['result'],
@@ -131,6 +152,7 @@ export default function Home() {
     <div className="flex">
       <Head>
         <title>Lexid</title>
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" />
       </Head>
       <aside className="fixed top-0 left-0 z-40 w-96 h-screen transition-transform -translate-x-full md:translate-x-0 shadow-sm" aria-label="Sidebar">
         <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
