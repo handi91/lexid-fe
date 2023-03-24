@@ -9,12 +9,6 @@ import example from '@/constants/example-question.json'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const BACK_END = {
-  ask: "http://localhost:8080/ask",
-  correction: "http://localhost:8080/ask2",
-  suggestion: "http://localhost:8080/suggestion"
-}
-
 const BACKEND_ASK = process.env.NEXT_PUBLIC_ASK
 const BACKEND_CORRECTION = process.env.NEXT_PUBLIC_CORRECTION
 const BACKEND_SUGGESTION = process.env.NEXT_PUBLIC_SUGGESTION 
@@ -211,7 +205,7 @@ export default function Home() {
                       ? "rounded-tl-lg rounded-tr-lg"
                       : "rounded-lg"
                   } z-10 border focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 text-black`}
-                  placeholder='Ketik pertanyaan dimulai dengan "Apa", "Bagaimana", "Berapa", "Kapan", "Peraturan", "Siapa"'
+                  placeholder={BACKEND_CORRECTION}
                   onChange={ e => handleOnchangeInput(e.target.value)}
                   onClick={ e => handleOnchangeInput(e.target.value)}
                 />
