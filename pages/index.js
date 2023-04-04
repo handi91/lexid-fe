@@ -94,7 +94,7 @@ export default function Home() {
       if (response.data.invalid) {
         let result = {
           question: searchValue,
-          answer: "Pertanyaan tidak dikenali",
+          answer: "",
           alternativeQuestion : "",
           alternativeAnswer: ""
         }
@@ -193,20 +193,19 @@ export default function Home() {
                 <div>
                 <p className="whitespace-pre-line">{result.answer}</p>
                 {result.alternativeQuestion &&
-                  <div className="w-full py-3">
-                    <div className="p-3 px-5 border border-slate-300">
-                      <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
-                      <p className="mt-2.5">{result.alternativeQuestion}</p>
-                      <div className="flex mt-0.5 w-full space-x-3">
-                        <p className="font-medium">Jawaban:</p>
-                        <div>
-                          <p className="whitespace-pre-line">
-                            {result.alternativeAnswer}
-                          </p>
-                        </div>
+                  <div>
+                    <p className="font-medium">Apakah maksud pertanyaan Anda?</p>
+                    <p className="mt-2.5">{result.alternativeQuestion}</p>
+                    <div className="flex mt-0.5 w-full space-x-3">
+                      <p className="font-medium">Jawaban:</p>
+                      <div>
+                        <p className="whitespace-pre-line">
+                          {result.alternativeAnswer}
+                        </p>
                       </div>
                     </div>
-                  </div>}
+                  </div>
+                  }
                 </div>
               </div></>
             )
