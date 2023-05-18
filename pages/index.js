@@ -159,7 +159,7 @@ export default function Home() {
       </Head>
       <aside className="fixed top-0 left-0 z-40 w-96 h-screen transition-transform -translate-x-full md:translate-x-0 shadow-sm" aria-label="Sidebar">
         <div className="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
-          <p className='p-4 font-medium text-lg text-white text-center w-full bg-amber-900 sticky top-0'>Contoh Pertanyaan</p>
+          <p className='p-4 font-medium text-lg text-white text-center w-full bg-amber-900 sticky top-0'>Rekomendasi Pertanyaan</p>
           <ul className="space-y-2 mt-2">
             {example.map((data) => {
               return (
