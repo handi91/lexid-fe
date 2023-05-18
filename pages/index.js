@@ -91,7 +91,7 @@ export default function Home() {
           "Referer-Policy":"unsafe-url"
         }
       });
-      if (response.data.invalid) {
+      if (response.data.invalid || response.data.result ==="Jawaban tidak ditemukan") {
         let result = {
           question: searchValue,
           answer: "",
@@ -105,8 +105,12 @@ export default function Home() {
           }
         })
         if (alternativeResponse.data.result) {
-          result.alternativeQuestion = alternativeResponse.data.question
-          result.alternativeAnswer = alternativeResponse.data.result
+          if (alternativeResponse.data.question !==searchValue) {
+            result.alternativeQuestion = alternativeResponse.data.question
+            result.alternativeAnswer = alternativeResponse.data.result
+          } else {
+            result.answer = alternativeResponse.data.result
+          }
         }
         setResults([...results, result])
       } else {
