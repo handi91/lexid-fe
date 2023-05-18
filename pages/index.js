@@ -105,7 +105,7 @@ export default function Home() {
           }
         })
         if (alternativeResponse.data.result) {
-          if (alternativeResponse.data.question !==searchValue) {
+          if (alternativeResponse.data.question.toLowerCase() !== searchValue.toLocaleLowerCase()) {
             result.alternativeQuestion = alternativeResponse.data.question
             result.alternativeAnswer = alternativeResponse.data.result
           } else {
